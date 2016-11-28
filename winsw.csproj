@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advapi32.cs" />
+    <Compile Include="ConcatenatedStream.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="DynamicProxy.cs" />
     <Compile Include="Kernel32.cs" />

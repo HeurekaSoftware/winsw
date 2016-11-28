@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -87,8 +88,8 @@ namespace winsw
 
         public override void log(Stream outputStream, Stream errorStream)
         {
-            new Thread(delegate() { CopyStream(outputStream, new FileStream(OutputLogFileName, FileMode)); }).Start();
-            new Thread(delegate() { CopyStream(errorStream, new FileStream(ErrorLogFileName, FileMode)); }).Start();
+            ConcatenatedStream cs = new ConcatenatedStream(new List<Stream> { outputStream, errorStream });
+            new Thread(delegate() { CopyStream(cs, new FileStream(OutputLogFileName, FileMode)); }).Start();
         }
     }
 
@@ -134,8 +135,8 @@ namespace winsw
 
         public override void log(Stream outputStream, Stream errorStream)
         {
-            new Thread(delegate() { CopyStreamWithDateRotation(outputStream, ".out.log"); }).Start();
-            new Thread(delegate() { CopyStreamWithDateRotation(errorStream, ".err.log"); }).Start();
+            ConcatenatedStream cs = new ConcatenatedStream(new List<Stream> { outputStream, errorStream });
+            new Thread(delegate() { CopyStreamWithDateRotation(cs, ".out.log"); }).Start();
         }
 
         /// <summary>
@@ -225,8 +226,8 @@ namespace winsw
 
         public override void log(Stream outputStream, Stream errorStream)
         {
-            new Thread(delegate() { CopyStreamWithRotation(outputStream, ".out.log"); }).Start();
-            new Thread(delegate() { CopyStreamWithRotation(errorStream, ".err.log"); }).Start();
+            ConcatenatedStream cs = new ConcatenatedStream(new List<Stream> { outputStream, errorStream });
+            new Thread(delegate() { CopyStreamWithRotation(cs, ".out.log"); }).Start();
         }
 
         /// <summary>
